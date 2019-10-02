@@ -1,7 +1,7 @@
 """ Preprocessing scraped data for modeling. """
 # %%
 import ast
-from typing import List
+from typing import List, Tuple
 
 import pandas as pd
 
@@ -46,14 +46,32 @@ def public_images_thumbs(images_json: str) -> List[str]:
     return thumbs_list
 
 
-df_select['public_images_thumbs'] = df_select.public_images.apply(public_images_thumbs)
-df_select['public_images_count'] = df_select.public_images_thumbs.apply(len)
+df_select["public_images_thumbs"] = df_select.public_images.apply(public_images_thumbs)
+df_select["public_images_count"] = df_select.public_images_thumbs.apply(len)
 
 # %% FILTER ROWS WITH IMAGES
 df_filter = df_select.query("public_images_count > 0").reset_index()
 
+# %% make numbers unique per row
+
+# get tuples of IDs and thumb links
+id_thumb: List[Tuple[int, str]] = []
+for _, row in df_filter.iterrows():
+    id: int = row.id
+    thumbs: List[str] = row.public_images_thumbs
+    for thumb in thumbs:
+        id_thumb.append((id, thumb))
+df_id_thumb = pd.DataFrame(data=id_thumb, columns=["id", "thumbnail"])
+
+# join new columns to dataframe, drop obsolete ones
+df_merged = pd.merge(
+    left=df_id_thumb, right=df_filter, how="inner", left_on="id", right_on="id"
+).drop(
+    columns=["index", "public_images", "public_images_thumbs", "public_images_count"]
+)
+assert len(df_merged) == len(df_id_thumb), "Lines got lost at merge."
+
 # %% TO CSV
-df_filter.to_csv("data/df_filter.csv", index=False, sep=";", quotechar="'")
+df_merged.to_csv("data/df_merged.csv", index=False, sep=";", quotechar="'")
 
 # %%
-# TODO: create multiple rows for images with more than one image
