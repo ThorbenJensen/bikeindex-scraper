@@ -26,6 +26,7 @@ if not os.path.exists(IMG_DIR):
 
 for link, id in zip(df_merged.thumbnail, df_merged.thumbnail_id):
     print(f"downloading image {id}.jpg "
+          f"from {link} "
           f"({(df_merged.thumbnail_id==id).idxmax() + 1}/{len(df_merged)})...")
     urllib.request.urlretrieve(link, IMG_DIR + id + ".jpg")
     time.sleep(2)
