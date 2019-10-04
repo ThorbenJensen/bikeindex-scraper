@@ -1,7 +1,7 @@
-md5: 3999a8d0c59994225a3e68b56f13165f
+md5: dafbbad439dc0866c165bbfee35856ab
 cmd: python bikeindex/01_scrape_bike_ids.py
 deps:
-- md5: 68bdcadaee6fdd8001773931b0ceaf10
+- md5: 19a5b21bce55594948cf1a5368244ab7
   path: bikeindex/01_scrape_bike_ids.py
 outs:
 - md5: 82a97151099d1d426c5c11c0854224c3
