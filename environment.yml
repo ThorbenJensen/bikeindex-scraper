@@ -8,6 +8,7 @@ dependencies:
     - requests
     # dev
     - black
+    - dvc
     - flake8
     - jupyter
     - rope
