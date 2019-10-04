@@ -1,4 +1,4 @@
-""" Scrape bike information from api. """
+""" Scrape bike information from API. """
 # %%
 import math
 import time
