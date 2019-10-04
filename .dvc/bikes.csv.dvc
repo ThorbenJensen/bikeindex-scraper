@@ -1,0 +1,11 @@
+md5: 3999a8d0c59994225a3e68b56f13165f
+cmd: python bikeindex/01_scrape_bike_ids.py
+deps:
+- md5: 68bdcadaee6fdd8001773931b0ceaf10
+  path: bikeindex/01_scrape_bike_ids.py
+outs:
+- md5: 82a97151099d1d426c5c11c0854224c3
+  path: data/bikes.csv
+  cache: true
+  metric: false
+  persist: false

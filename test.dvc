@@ -1,7 +1,0 @@
-md5: 56863cd4374d837ee661b080bcb62d37
-outs:
-- md5: d41d8cd98f00b204e9800998ecf8427e
-  path: test
-  cache: true
-  metric: false
-  persist: false
