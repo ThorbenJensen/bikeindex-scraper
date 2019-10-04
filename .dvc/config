@@ -1,2 +1,5 @@
 ['remote "myremote"']
 url = gs://bikeindex-dvc
+credentialpath = secret/bikeindex-scraper.json
+[core]
+remote = myremote
