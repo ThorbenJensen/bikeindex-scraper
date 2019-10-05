@@ -1,0 +1,13 @@
+md5: 167675eb2c25f9d1d059006abb1186ce
+cmd: python bikeindex/04_download_imgs.py
+deps:
+- md5: b8712c89971724512312c03ecd8eadae
+  path: bikeindex/04_download_imgs.py
+- md5: aa310db0722b4c8118e9096f29ed0f10
+  path: data/df_merged.csv
+outs:
+- md5: 0351a61c76565e091331c730a06b3312.dir
+  path: data/download
+  cache: true
+  metric: false
+  persist: false
