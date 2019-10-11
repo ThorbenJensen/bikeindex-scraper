@@ -9,6 +9,7 @@ dependencies:
     # dev
     - black
     - dvc
+    - dvc[gs]
     - flake8
     - jupyter
     - rope
