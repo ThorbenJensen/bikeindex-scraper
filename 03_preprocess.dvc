@@ -3,11 +3,11 @@ deps:
 - path: bikeindex/03_preprocess.py
   md5: d501fb092c30078a0264985702bf38a7
 - path: data/df_bikes.csv
-  md5: 4a122fba05718cb25c7b495e1a8f9856
+  md5: f902d3beea456d8811913e42fcf5fb13
 outs:
 - path: data/df_merged.csv
   cache: true
   metric: false
   persist: false
-  md5: aa310db0722b4c8118e9096f29ed0f10
-md5: b552185601916d4a755e14ae68533954
+  md5: fdf537ccf1946e6c50c700dcb029d5df
+md5: cbe7503d0ad001c54bab1d4bc11c7729
