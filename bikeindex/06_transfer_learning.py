@@ -11,7 +11,7 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 
-# %% Load images
+# %% LOAD IAMGES
 DATA_DIR = "data/download/"
 ids_downloaded = sorted(
     [int(i.split(".")[0]) for i in os.listdir(DATA_DIR) if i.endswith(".jpg")]
@@ -26,7 +26,7 @@ for img_file in os.listdir(DATA_DIR):
 
 x = np.concatenate([img_list], axis=0)
 
-# %% load target vector
+# %% LOAD TARGET
 df = pd.read_csv("data/df_merged.csv", quotechar="'", sep=";")
 df_filtered = df[df["thumbnail_id"].isin(ids_downloaded)].sort_values(by="thumbnail_id")
 # check properties of result
@@ -40,7 +40,7 @@ y_encoded = pd.DataFrame(mlb.fit_transform(y_list), columns=mlb.classes_)
 y = y_encoded.values
 y_labels = list(y_encoded.columns)
 
-# %% create model for transfer learning
+# %% CREATE MODEL
 base_model = InceptionV3(include_top=False, weights="imagenet")
 # add a global spatial average pooling layer
 x = base_model.output
@@ -57,17 +57,17 @@ for layer in base_model.layers:
 # compile the model (should be done *after* setting layers to non-trainable)
 model.compile(optimizer="adam", loss="categorical_crossentropy")
 
-# %% validation
+# %% DATA AUGMENTATION
 datagen = image.ImageDataGenerator(validation_split=0.1)
 datagen.fit(x)
 datagen.flow(x, y, batch_size=32)
 
-# %% training
+# %% TRAINING
 model.fit_generator(
     datagen.flow(x, y, batch_size=32), steps_per_epoch=len(x) / 32, epochs=2, verbose=1
 )
 
-# %% predict with model
+# %% PREDICTION
 img_path = "data/download/446.jpg"
 img = image.load_img(img_path, target_size=(224, 224))
 x = image.img_to_array(img)
