@@ -7,7 +7,7 @@ dependencies:
     - pandas
     - requests
     - scikit-learn
-    - tensorflow
+    - tensorflow-gpu
     # dev
     - black
     - dvc
