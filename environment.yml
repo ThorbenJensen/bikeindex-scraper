@@ -6,6 +6,7 @@ dependencies:
   - pip:
     - pandas
     - requests
+    - scikit-learn
     - tensorflow
     # dev
     - black
