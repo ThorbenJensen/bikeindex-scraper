@@ -71,6 +71,16 @@ df_merged = pd.merge(
 )
 assert len(df_merged) == len(df_id_thumb), "Lines got lost at merge."
 
+
+# %% Create unique ID for images
+def id_froM_link(link: str) -> str:
+    return link.split("/")[-2]
+
+
+df_merged["thumbnail_id"] = df_merged.thumbnail.apply(id_froM_link)
+assert not df_merged.thumbnail_id.duplicated().any(), "Duplicated thumbnail ids!"
+
+
 # %% TO CSV
 df_merged.to_csv("data/df_merged.csv", index=False, sep=";", quotechar="'")
 
