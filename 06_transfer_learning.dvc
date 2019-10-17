@@ -1,0 +1,7 @@
+md5: 3f241b748fc3a01ff94a2334a2fec943
+cmd: python3.7 bikeindex/06_transfer_learning.py
+deps:
+- md5: 5d6c3128373561cf9c7cc7b301da9ec4.dir
+  path: data/download
+- md5: 761a6739e9cf90d1278633dc00d1a808
+  path: data/df_merged.csv
