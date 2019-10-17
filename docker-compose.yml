@@ -9,7 +9,6 @@ services:
       - $SSH_AUTH_SOCK:/ssh-agent
     environment:
         SSH_AUTH_SOCK: /ssh-agent
-    user: "1000"
     tty: true
     command: "/bin/bash"
 
