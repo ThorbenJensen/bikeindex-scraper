@@ -3,21 +3,17 @@ FROM nvidia/cuda:10.1-cudnn7-devel
 # system tools
 RUN apt-get update \ 
     && apt-get upgrade -y \
-    && apt-get install wget -y
+    && apt-get install -y \
+    wget \
+    git
 
-# install miniconda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda2-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh && \
-    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
-    echo "conda activate base" >> ~/.bashrc
+# install python
+RUN apt-get install -y \
+    python3.7 \
+    python3-pip
 
-# build environment
-# RUN conda env create -f environment.yml && \
-#     activate bikeindex-scraper
+# install dependencies
+WORKDIR /app
+COPY requirements.txt /app/
+RUN python3.7 -m pip install -r requirements.txt
 
-# mount project folder
-# TODO
-
-RUN [ "/bin/bash" ]
