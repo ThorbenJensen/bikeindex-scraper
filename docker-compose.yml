@@ -1,0 +1,14 @@
+version: '3'
+services:
+  dev:
+    build: .
+    container_name: bike
+    volumes:
+      - .:/app/
+      - ~/.gitconfig:/etc/gitconfig
+      - $SSH_AUTH_SOCK:/ssh-agent
+    environment:
+        SSH_AUTH_SOCK: /ssh-agent
+    tty: true
+    command: "/bin/bash"
+
