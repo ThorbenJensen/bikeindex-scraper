@@ -20,9 +20,9 @@ ids_downloaded = sorted(
 img_list = []
 for img_file in os.listdir(DATA_DIR):
     img = image.load_img("data/download/" + img_file, target_size=(224, 224))
-    x = image.img_to_array(img)
-    x = preprocess_input(x)
-    img_list.append(x)
+    img_arr = image.img_to_array(img)
+    img_prep = preprocess_input(img_arr)
+    img_list.append(img_prep)
 
 x = np.concatenate([img_list], axis=0)
 
@@ -43,12 +43,12 @@ y_labels = list(y_encoded.columns)
 # %% CREATE MODEL
 base_model = InceptionV3(include_top=False, weights="imagenet")
 # add a global spatial average pooling layer
-x = base_model.output
-x = GlobalAveragePooling2D()(x)
+x1 = base_model.output
+x2 = GlobalAveragePooling2D()(x1)
 # let's add a fully-connected layer
-x = Dense(1024, activation="relu")(x)
+x3 = Dense(1024, activation="relu")(x2)
 # and a logistic layer -- let's say we have 200 classes
-predictions = Dense(len(y_labels), activation="softmax")(x)
+predictions = Dense(len(y_labels), activation="softmax")(x3)
 # this is the model we will train
 model = Model(inputs=base_model.input, outputs=predictions)
 # freeze layers from base model
