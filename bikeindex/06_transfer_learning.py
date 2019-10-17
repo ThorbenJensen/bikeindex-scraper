@@ -11,6 +11,8 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 
+EPOCHS = 10
+
 # %% LOAD IAMGES
 DATA_DIR = "data/download/"
 ids_downloaded = sorted(
@@ -63,7 +65,7 @@ datagen.fit(x)
 
 # %% TRAINING
 model.fit_generator(
-    datagen.flow(x, y, batch_size=32), steps_per_epoch=len(x) / 32, epochs=2, verbose=1
+    datagen.flow(x, y, batch_size=32), steps_per_epoch=len(x) / 32, epochs=EPOCHS, verbose=1
 )
 
 # %% PREDICTION
