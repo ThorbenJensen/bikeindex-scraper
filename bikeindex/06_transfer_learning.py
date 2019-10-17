@@ -60,7 +60,6 @@ model.compile(optimizer="adam", loss="categorical_crossentropy")
 # %% DATA AUGMENTATION
 datagen = image.ImageDataGenerator(validation_split=0.1)
 datagen.fit(x)
-datagen.flow(x, y, batch_size=32)
 
 # %% TRAINING
 model.fit_generator(
@@ -70,10 +69,10 @@ model.fit_generator(
 # %% PREDICTION
 img_path = "data/download/446.jpg"
 img = image.load_img(img_path, target_size=(224, 224))
-x = image.img_to_array(img)
-x = np.expand_dims(x, axis=0)
-x = preprocess_input(x)
-preds = model.predict(x)
+img_arr = image.img_to_array(img)
+img_arr = np.expand_dims(img_arr, axis=0)
+img_arr = preprocess_input(img_arr)
+preds = model.predict(img_arr)
 print(f"most likely prediction: {y_labels[np.argmax(preds)]}")
 
 # %%
