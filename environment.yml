@@ -6,6 +6,8 @@ dependencies:
   - pip:
     - pandas
     - requests
+    - scikit-learn
+    - tensorflow-gpu
     # dev
     - black
     - dvc

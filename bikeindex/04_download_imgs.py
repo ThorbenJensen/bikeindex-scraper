@@ -10,15 +10,6 @@ IMG_DIR = "data/download/"
 # %% LOAD DATA
 df_merged = pd.read_csv("data/df_merged.csv", delimiter=";", quotechar="'").assign()
 
-
-# %% IMAGE ID
-def id_froM_link(link: str) -> str:
-    return link.split("/")[-2]
-
-
-df_merged["thumbnail_id"] = df_merged.thumbnail.apply(id_froM_link)
-assert not df_merged.thumbnail_id.duplicated().any(), "Duplicated thumbnail ids!"
-
 # %% DOWNLOAD ALL IMAGES
 if not os.path.exists(IMG_DIR):
     os.makedirs(IMG_DIR)

@@ -1,7 +1,7 @@
 cmd: python bikeindex/03_preprocess.py
 deps:
 - path: bikeindex/03_preprocess.py
-  md5: d501fb092c30078a0264985702bf38a7
+  md5: 6dd96c9d2b2427311b3e80f5b4b72b10
 - path: data/df_bikes.csv
   md5: f902d3beea456d8811913e42fcf5fb13
 outs:
@@ -9,5 +9,5 @@ outs:
   cache: true
   metric: false
   persist: false
-  md5: fdf537ccf1946e6c50c700dcb029d5df
-md5: cbe7503d0ad001c54bab1d4bc11c7729
+  md5: 761a6739e9cf90d1278633dc00d1a808
+md5: 5fd3a062542c672ec3f8289f1ff2f49a
