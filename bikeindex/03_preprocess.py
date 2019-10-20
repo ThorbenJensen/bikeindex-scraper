@@ -1,9 +1,13 @@
 """ Preprocessing scraped bike data for modeling. """
 # %%
+import sys
 from ast import literal_eval
 from typing import List, Tuple
 
 import pandas as pd
+
+sys.path.append(".")
+from bikeindex.etl import id_from_image_link, thumbs_from_dict_list
 
 # %% LOAD BIKE DATA
 df_bikes = pd.read_csv("data/df_bikes.csv", sep=";", quotechar="'")
@@ -35,18 +39,7 @@ df_select = df_bikes.filter(
     )
 )
 
-
 # %% GET LINKS TO THUMBNAIL IMAGES
-def thumbs_from_dict_list(dict_list: List[dict]) -> List[str]:
-    """Get values for key 'thumbs' in list of dictionaries.
-    Arguments:
-        dict_list {List[dict]} -- List of dictionaries with key 'thumbs'.
-    Returns:
-        List[str] -- Values for key 'thumbs'.
-    """
-    return [e["thumb"] for e in dict_list]
-
-
 df_select["public_images_thumbs"] = df_select.public_images.map(literal_eval).map(
     thumbs_from_dict_list
 )
@@ -60,7 +53,6 @@ df_filter = (
 )
 
 # %% make numbers unique per row
-
 # get tuples of IDs and thumb links
 id_thumb: List[Tuple[int, str]] = [
     (row.id, thumb)
@@ -76,22 +68,10 @@ df_merged = pd.merge(
 
 assert len(df_merged) == len(df_id_thumb), "Lines got lost at merge."
 
-
 # %% Create unique ID for images
-def id_from_image_link(link: str) -> str:
-    """Extracting ID as String from link to thumbnail.
-    Arguments:
-        link {str} -- Weblink to thumbnail.
-    Returns:
-        str -- ID of image.
-    """
-    return link.split("/")[-2]
-
-
 df_merged["thumbnail_id"] = df_merged.thumbnail.map(id_from_image_link)
 
 assert not df_merged.thumbnail_id.duplicated().any(), "Duplicated thumbnail ids!"
-
 
 # %% SAVE TO CSV
 df_merged.to_csv("data/df_merged.csv", index=False, sep=";", quotechar="'")
