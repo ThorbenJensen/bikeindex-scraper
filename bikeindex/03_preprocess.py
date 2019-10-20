@@ -1,18 +1,15 @@
-""" Preprocessing scraped data for modeling. """
+""" Preprocessing scraped bike data for modeling. """
 # %%
-import ast
+from ast import literal_eval
 from typing import List, Tuple
 
 import pandas as pd
 
-# %% LOAD IDs
+# %% LOAD BIKE DATA
 df_bikes = pd.read_csv("data/df_bikes.csv", sep=";", quotechar="'")
 
-df_bikes.columns
-
-# %%
 df_select = df_bikes.filter(
-    items=[
+    items=(
         # basic info
         "id",
         "type_of_cycle",
@@ -35,53 +32,68 @@ df_select = df_bikes.filter(
         # images
         "is_stock_img",
         "public_images",
-    ]
+    )
 )
 
 
-# %% RE-STRUCTURE 'PUBLIC IMAGES'
-def public_images_thumbs(images_json: str) -> List[str]:
-    images_list: List[dict] = ast.literal_eval(images_json)
-    thumbs_list: List[str] = [i["thumb"] for i in images_list]
-    return thumbs_list
+# %% GET LINKS TO THUMBNAIL IMAGES
+def thumbs_from_dict_list(dict_list: List[dict]) -> List[str]:
+    """Get values for key 'thumbs' in list of dictionaries.
+    Arguments:
+        dict_list {List[dict]} -- List of dictionaries with key 'thumbs'.
+    Returns:
+        List[str] -- Values for key 'thumbs'.
+    """
+    return [e["thumb"] for e in dict_list]
 
 
-df_select["public_images_thumbs"] = df_select.public_images.apply(public_images_thumbs)
-df_select["public_images_count"] = df_select.public_images_thumbs.apply(len)
+df_select["public_images_thumbs"] = df_select.public_images.map(literal_eval).map(
+    thumbs_from_dict_list
+)
+df_select["public_images_count"] = df_select.public_images_thumbs.map(len)
 
-# %% FILTER ROWS WITH IMAGES
-df_filter = df_select.query("public_images_count > 0").reset_index()
+# %% FILTER ROWS WITH AT LEAST ONE IMAGE
+df_filter = (
+    df_select.query("public_images_count > 0")
+    .reset_index()
+    .drop(columns=["public_images", "public_images_count"])  # columns now obsolete
+)
 
 # %% make numbers unique per row
 
 # get tuples of IDs and thumb links
-id_thumb: List[Tuple[int, str]] = []
-for _, row in df_filter.iterrows():
-    id: int = row.id
-    thumbs: List[str] = row.public_images_thumbs
-    for thumb in thumbs:
-        id_thumb.append((id, thumb))
+id_thumb: List[Tuple[int, str]] = [
+    (row.id, thumb)
+    for _, row in df_filter.iterrows()
+    for thumb in row.public_images_thumbs
+]
 df_id_thumb = pd.DataFrame(data=id_thumb, columns=["id", "thumbnail"])
 
 # join new columns to dataframe, drop obsolete ones
 df_merged = pd.merge(
     left=df_id_thumb, right=df_filter, how="inner", left_on="id", right_on="id"
-).drop(
-    columns=["index", "public_images", "public_images_thumbs", "public_images_count"]
-)
+).drop(columns=["public_images_thumbs"])  # column now obsolete
+
 assert len(df_merged) == len(df_id_thumb), "Lines got lost at merge."
 
 
 # %% Create unique ID for images
-def id_froM_link(link: str) -> str:
+def id_from_image_link(link: str) -> str:
+    """Extracting ID as String from link to thumbnail.
+    Arguments:
+        link {str} -- Weblink to thumbnail.
+    Returns:
+        str -- ID of image.
+    """
     return link.split("/")[-2]
 
 
-df_merged["thumbnail_id"] = df_merged.thumbnail.apply(id_froM_link)
+df_merged["thumbnail_id"] = df_merged.thumbnail.map(id_from_image_link)
+
 assert not df_merged.thumbnail_id.duplicated().any(), "Duplicated thumbnail ids!"
 
 
-# %% TO CSV
+# %% SAVE TO CSV
 df_merged.to_csv("data/df_merged.csv", index=False, sep=";", quotechar="'")
 
 # %%
