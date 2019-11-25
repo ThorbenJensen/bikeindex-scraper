@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """ Training networks with transfer learning. """
 # %%
 import os

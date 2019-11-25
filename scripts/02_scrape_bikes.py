@@ -1,14 +1,11 @@
+#!/usr/bin/env python3
 # %%
-import sys
 import time
 from typing import List
 
 import pandas as pd
 
-sys.path.append(".")
 from bikeindex.api import get_bike
-
-
 
 # %% LOAD IDs
 df = pd.read_csv("data/bikes.csv", sep=";", quotechar="'")

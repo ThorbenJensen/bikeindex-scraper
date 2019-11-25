@@ -1,12 +1,11 @@
+#!/usr/bin/env python3
 """ Preprocessing scraped bike data for modeling. """
 # %%
-import sys
 from ast import literal_eval
 from typing import List, Tuple
 
 import pandas as pd
 
-sys.path.append(".")
 from bikeindex.etl import id_from_image_link, thumbs_from_dict_list
 
 # %% LOAD BIKE DATA

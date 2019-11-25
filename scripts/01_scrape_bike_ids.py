@@ -1,14 +1,12 @@
+#!/usr/bin/env python3
 """ Scrape bike information from API. """
 # %%
 import math
 import time
-import sys
 
 import pandas as pd
 
-sys.path.append(".")
 from bikeindex.api import search_all
-
 
 MAX_ID: int = 6059692
 PATH_DOWNLOAD: str = "data/download/"
