@@ -9,6 +9,7 @@ sys.path.append(".")
 from bikeindex.api import get_bike
 
 
+
 # %% LOAD IDs
 df = pd.read_csv("data/bikes.csv", sep=";", quotechar="'")
 assert not df.id.duplicated().any(), "duplicated IDs in bikes.csv"
