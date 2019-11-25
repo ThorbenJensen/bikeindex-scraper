@@ -12,3 +12,5 @@
 # python
 *.pyc
 /test
+/env3*
+*.egg-info/

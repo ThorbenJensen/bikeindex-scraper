@@ -15,5 +15,4 @@ RUN apt-get install -y \
 # install dependencies
 WORKDIR /app
 COPY requirements.txt /app/
-RUN python3.7 -m pip install -r requirements.txt
-
+RUN python3.7 -m pip install -r requirements-gpu-dev.txt
