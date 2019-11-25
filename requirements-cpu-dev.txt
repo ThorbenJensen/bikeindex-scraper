@@ -1,0 +1,2 @@
+# Install dependencies for CPU and dev
+-e ".[cpu,dev]"
